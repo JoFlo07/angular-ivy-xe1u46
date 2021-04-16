@@ -35,7 +35,8 @@ export class AppComponent implements OnInit {
       reversed: true,
       min: 0,
       max: 100,
-      tickInterval: 10,
+      gridLineWidth: 0,
+      tickInterval: 50,
       labels: {
         formatter: function() {
           return this.value + "%";
@@ -43,18 +44,18 @@ export class AppComponent implements OnInit {
       }
     },
     xAxis: {
-      tickWidth: 1,
-      reversed: true,
+      opposite: true,
       min: 0,
-      max: 13,
       tickInterval: 1,
       categories: isos
     },
     series: [
       {
         type: "bar",
-        color: "#0000004f",
-        showInLegend: false
+        color: "#ffffff",
+        shadow: true,
+        showInLegend: false,
+        data: [20, 10, 20, 20, 90, 70, 10, 20, 12, 15, 40, 25, 29, 90]
       }
     ]
   };
