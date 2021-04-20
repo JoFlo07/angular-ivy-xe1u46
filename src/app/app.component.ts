@@ -13,13 +13,32 @@ NoData(Highcharts);
 })
 export class AppComponent implements OnInit {
   chart: Highcharts.Chart;
+  isos = {
+    "component.iso.clause.A05.titleKeyKeyKeyKeyKey": 0.2,
+    "component.iso.clause.A06.titleKeyKey": 0.8,
+    "component.iso.clause.A07.titleKeyKey": 0.1,
+    "component.iso.clause.A08.title": 1,
+    "component.iso.clause.A09.title": 0.7,
+    "component.iso.clause.A10.title": 0.3,
+    "component.iso.clause.A11.titleKeyKey": 0.5,
+    "component.iso.clause.A12.title": 0,
+    "component.iso.clause.A13.title": 0.2,
+    "component.iso.clause.A14.title": 0.5,
+    "component.iso.clause.A15.title": 0.4,
+    "component.iso.clause.A16.title": 0.2,
+    "component.iso.clause.A17.title": 0.7,
+    "component.iso.clause.A18.title": 0.3
+  };
 
   ngOnInit() {
     this.chart = Highcharts.chart("container", this.options);
+    const data = this.createDataSet(this.isos);
+    this.chart.series[0].setData(data);
   }
 
   options: Highcharts.Options = {
     chart: {
+      margin: [10, 250, 35, 10],
       borderRadius: 4,
       plotBackgroundColor: {
         linearGradient: { x1: 0, x2: 1, y1: 1, y2: 1 },
@@ -34,9 +53,8 @@ export class AppComponent implements OnInit {
       tickWidth: 1,
       reversed: true,
       min: 0,
-      max: 100,
       gridLineWidth: 0,
-      tickInterval: 50,
+      tickPositions: [0, 50, 100],
       labels: {
         formatter: function() {
           return this.value + "%";
@@ -44,36 +62,31 @@ export class AppComponent implements OnInit {
       }
     },
     xAxis: {
+      type: "category",
       opposite: true,
       min: 0,
       tickInterval: 1,
-      categories: isos
+      labels: {
+        autoRotationLimit: 10
+      }
     },
     series: [
       {
         type: "bar",
         color: "#ffffff",
         shadow: true,
-        showInLegend: false,
-        data: [20, 10, 20, 20, 90, 70, 10, 20, 12, 15, 40, 25, 29, 90]
+        showInLegend: false
       }
     ]
   };
-}
 
-const isos = [
-  "A.05 Information security policies",
-  "A.06 Organization of information security",
-  "A.07 Human resource security",
-  "A.08 Asset management",
-  "A.09 Access control",
-  "A.10 Cryptography",
-  "A.11 Physical and environmental security",
-  "A.12 Operations security",
-  "A.13 Communications security",
-  "A.14 System acquisition, development and maintenance",
-  "A.15 Supplier relationships",
-  "A.16 Information security incident management",
-  "A.17 Information security aspects of BCM",
-  "A.18 Compliance"
-];
+  private createDataSet(securityLevels: any) {
+    return Object.keys(securityLevels).map((securityLevelKey, index) => {
+      return {
+        x: index,
+        y: Math.round(securityLevels[securityLevelKey] * 100),
+        name: securityLevelKey
+      };
+    });
+  }
+}
